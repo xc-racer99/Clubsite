@@ -119,7 +119,7 @@ foreach ($urlFields as $urlField) {
     </div>
 </fieldset>
 <?php
-echo $this->Form->input('series_id', array('empty' => 'Choose the event series'));
+echo $this->Form->input('series_id', array('type' => 'select', 'options' => $series));
 echo $this->Form->input('map_id', array('empty' => 'Choose the event map'));
 ?>
 

@@ -311,6 +311,10 @@ footer.main-footer div {
     font-weight: bold;
 }
 
+.inactive-series {
+    color: gray;
+}
+
 .news-item {
     margin-bottom: 10px;
     margin-top: 10px;

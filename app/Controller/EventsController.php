@@ -154,20 +154,21 @@ class EventsController extends AppController {
 
     function _setLists($id = null) {
         $this->set('maps', $this->Event->Map->find('list', array('order'=>'Map.name')));
-        $event = $this->Event->find('first', array('conditions' => array('Event.id' => $id)));
-        if (!empty($event) && $event["Series"]["is_current"] === false) {
-            $this->set('series', $this->Event->Series->find('list',
-                array(
-                    'order' => array('Series.is_current DESC'),
-                )
-            ));
-        } else {
-            $this->set('series', $this->Event->Series->find('list',
-                array(
-                    'conditions' => array('Series.is_current' => 1),
-                )
-            ));
+
+        $allSeries = $this->Event->Series->find('all', array(
+            'fields' => array('Series.name', 'Series.id', 'Series.is_current'),
+            'recursive' => 0,
+        ));
+        $series = array('' => 'Choose the event series');
+        foreach($allSeries as $allSerie) {
+            if ($allSerie['Series']['is_current']) {
+                $series[] = array('name' => $allSerie['Series']['name'], 'value' => $allSerie['Series']['id']);
+            } else {
+                $series[] = array('name' => $allSerie['Series']['name'], 'value' => $allSerie['Series']['id'], 'class' => 'inactive-series');
+            }
         }
+        $this->set('series', $series);
+
         $this->set('eventClassifications', $this->Event->EventClassification->getDescriptionList());
     }
 
